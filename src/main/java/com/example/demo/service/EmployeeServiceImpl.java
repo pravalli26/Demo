@@ -15,6 +15,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepo repo;
+    
 
     @Override
     public EmployeeDto saveOrUpdate(EmployeeDto employee) {
@@ -35,8 +36,37 @@ public class EmployeeServiceImpl implements EmployeeService {
         return transform(entity);
     }
 
+    @Override
+    public EmployeeDto update(EmployeeDto employee) throws Exception {
+        EmployeeEntity entity;
+        if (Objects.nonNull(employee.getId())) {
+            entity = repo.findById(employee.getId()).orElse(null);
+        }else {
+           throw new Exception("Resource Not Found") ;
+        }
+        if (Objects.isNull(entity)){
+            throw new Exception("Resource Not Found") ;
+        }
+        entity.setDepartment(employee.getDepartment());
+        entity.setSalary(employee.getSalary());
+        entity.setName(employee.getName());
+        entity.setFirstName(employee.getFirstName());
+        entity.setLastName(employee.getLastName());
+        entity.setPhoneNo(employee.getPhoneNo());
+        entity = repo.save(entity);
+        return transform(entity);
+
+    }
+
+    @Override
+    public void deleteEmployeeById(int id) {
+        if( id !=0){
+           repo.deleteById(id);
+        }
+    }
 
 
+    //Optional class
 
 
     private EmployeeEntity transform(EmployeeDto dto) {

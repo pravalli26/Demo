@@ -23,9 +23,18 @@ public class EmployeeEndpoint {
     }
 
     // get put delete
+//    In GetMapping We can use the @Pathvariable And @RequsetParam
     @GetMapping("/employee/{id}")
     public EmployeeDto getEmployeeById(@PathVariable("id") int employeeId) {
         return service.getEmployeeById(employeeId);
+    }
+    @PutMapping("/employee")
+    public EmployeeDto updateEmployee(@RequestBody EmployeeDto employee) throws Exception {
+        return service.update(employee);
+    }
+    @DeleteMapping("/employee/{id}")
+    public void deleteEmployeeById(@PathVariable("id") int employeeId){
+        service.deleteEmployeeById(employeeId);
     }
 }
 
